@@ -2,7 +2,6 @@ import pygame
 from button import Button
 from pygame import mixer
 from fighter import Fighter
-import time
 
 mixer.init()
 pygame.init()
