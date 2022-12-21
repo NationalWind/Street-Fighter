@@ -47,7 +47,7 @@ MASTERYI_OFFSET = [72, 56]
 MASTERYI_DATA = [MASTERYI_SIZE, MASTERYI_SCALE, MASTERYI_OFFSET]
 CASSIOPEIA_SIZE = 125
 CASSIOPEIA_SCALE = 2
-CASSIOPEIA_OFFSET = [112, 107]
+CASSIOPEIA_OFFSET = [50, -10]
 CASSIOPEIA_DATA = [CASSIOPEIA_SIZE, CASSIOPEIA_SCALE, CASSIOPEIA_OFFSET]
 
 #load music and sounds
@@ -124,7 +124,7 @@ def draw_health_bar(health, x, y):
 
 #function for drawing avatar
 def draw_avatar(avatar1, avatar2):
-  screen.blit(avatar1, (400, 20))
+  screen.blit(avatar1, (400, 0))
   screen.blit(avatar2, (500, 0))
   
 
@@ -242,20 +242,16 @@ while run:
     fighter_1.draw(screen)
     fighter_2.draw(screen)
 
-    #check for player defeat
+      #check for player defeat
     if round_over == False:
       if fighter_1.alive == False:
         score[1] += 1
         round_over = True
         round_over_time = pygame.time.get_ticks()
-        fighter_1.alive = True
-        fighter_1.health = 100
       elif fighter_2.alive == False:
         score[0] += 1
         round_over = True
         round_over_time = pygame.time.get_ticks()
-        fighter_2.alive = True
-        fighter_2.health = 100
     else:
       #display victory image
       screen.blit(victory_img, (360, 150))
@@ -264,6 +260,18 @@ while run:
         intro_count = 3
         game_state = "character"
         choose_character = False
+        fighter_2.alive = True
+        fighter_2.health = 100
+        fighter_1.alive = True
+        fighter_1.health = 100
+        yone_1 = Fighter(1, 200, 310, False, YONE_DATA, yone_sheet, YONE_ANIMATION_STEPS, sword_fx)
+        yone_2 = Fighter(2, 700, 310, True, YONE_DATA, yone_sheet, YONE_ANIMATION_STEPS, sword_fx)
+        karthus_1 = Fighter(1, 200, 310, False, KARTHUS_DATA, karthus_sheet, KARTHUS_ANIMATION_STEPS, magic_fx)
+        karthus_2 = Fighter(2, 700, 310, True, KARTHUS_DATA, karthus_sheet, KARTHUS_ANIMATION_STEPS, magic_fx)
+        masteryi_1 = Fighter(1, 200, 310, False, MASTERYI_DATA, masteryi_sheet, MASTERYI_ANIMATION_STEPS, sword_fx)
+        masteryi_2 = Fighter(2, 700, 310, True, MASTERYI_DATA, masteryi_sheet, MASTERYI_ANIMATION_STEPS, sword_fx)
+        cassiopeia_1 = Fighter(1, 200, 310, False, CASSIOPEIA_DATA, cassiopeia_sheet, CASSIOPEIA_ANIMATION_STEPS, magic_fx)
+        cassiopeia_2 = Fighter(2, 700, 310, True, CASSIOPEIA_DATA, cassiopeia_sheet, CASSIOPEIA_ANIMATION_STEPS, magic_fx)
 
 
   #event handler
