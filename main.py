@@ -30,6 +30,8 @@ last_count_update = pygame.time.get_ticks()
 score = [0, 0]#player scores. [P1, P2]
 round_over = False
 ROUND_OVER_COOLDOWN = 2000
+choose_character = False
+
 
 #define fighter variables
 YONE_SIZE = 200
@@ -141,9 +143,6 @@ fighter_1 = type(yone_1)
 fighter_2 = type(yone_1)
 avatar_1 = type(avatar_yone)
 avatar_2 = type(avatar_yone)
-
-choose_character = False
-
 #game loop
 run = True
 while run:
