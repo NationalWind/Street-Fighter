@@ -35,10 +35,10 @@ choose_character = 0
 
 
 #define fighter variables
-YONE_SIZE = 200
-YONE_SCALE = 4
-YONE_OFFSET = [80, 77]
-YONE_DATA = [YONE_SIZE, YONE_SCALE, YONE_OFFSET]
+YASUO_SIZE = 200
+YASUO_SCALE = 4
+YASUO_OFFSET = [80, 77]
+YASUO_DATA = [YASUO_SIZE, YASUO_SCALE, YASUO_OFFSET]
 KARTHUS_SIZE = 250
 KARTHUS_SCALE = 3
 KARTHUS_OFFSET = [112, 107]
@@ -51,6 +51,24 @@ CASSIOPEIA_SIZE = 125
 CASSIOPEIA_SCALE = 2
 CASSIOPEIA_OFFSET = [50, -10]
 CASSIOPEIA_DATA = [CASSIOPEIA_SIZE, CASSIOPEIA_SCALE, CASSIOPEIA_OFFSET]
+
+#define projectile variables
+object_yasuo_size = 16
+object_yasuo_scale = 20
+object_yasuo_offset = [12, 5]
+object_yasuo_data = [object_yasuo_size, object_yasuo_scale, object_yasuo_offset]
+object_karthus_size = 5
+object_karthus_scale = 20
+object_karthus_offset = [5, 0]
+object_karthus_data = [object_karthus_size, object_karthus_scale, object_karthus_offset]
+object_masteryi_size = 16
+object_masteryi_scale = 20
+object_masteryi_offset = [12, 5]
+object_masteryi_data = [object_masteryi_size, object_masteryi_scale, object_masteryi_offset]
+object_cassiopeia_size = 5
+object_cassiopeia_scale = 15
+object_cassiopeia_offset = [5, -5]
+object_cassiopeia_data = [object_cassiopeia_size, object_cassiopeia_scale, object_cassiopeia_offset]
 
 #load music and sounds
 pygame.mixer.music.load("assets/audio/music.mp3")
@@ -75,14 +93,14 @@ exit_image = pygame.image.load("assets/images/buttons/exit.png").convert_alpha()
 exit_button = Button(322, 450, exit_image, 1)
 
 #load avatar
-avatar_yone = pygame.image.load("assets/images/avatar/yone.png").convert_alpha()
+avatar_yasuo = pygame.image.load("assets/images/avatar/yasuo.png").convert_alpha()
 avatar_karthus = pygame.image.load("assets/images/avatar/karthus.png").convert_alpha()
 avatar_masteryi = pygame.image.load("assets/images/avatar/masteryi.png").convert_alpha()
 avatar_cassiopeia = pygame.image.load("assets/images/avatar/cassiopeia.png").convert_alpha()
 
 #load character choosing buttons
-yone_button = Button(100, 250, avatar_yone, 1)
-yone_check = [False, False]
+yasuo_button = Button(100, 250, avatar_yasuo, 1)
+yasuo_check = [False, False]
 karthus_button = Button(300, 250, avatar_karthus, 1)
 karthus_check = [False, False]
 masteryi_button = Button(500, 250, avatar_masteryi, 1)
@@ -92,11 +110,16 @@ cassiopeia_check = [False, False]
 
 
 #load spritesheets
-yone_sheet = pygame.image.load("assets/images/characters/yone.png").convert_alpha()
+yasuo_sheet = pygame.image.load("assets/images/characters/yasuo.png").convert_alpha()
 karthus_sheet = pygame.image.load("assets/images/characters/karthus.png").convert_alpha()
 masteryi_sheet = pygame.image.load("assets/images/characters/masteryi.png").convert_alpha()
 cassiopeia_sheet = pygame.image.load("assets/images/characters/cassiopeia.png").convert_alpha()
 
+#load projectile image
+yasuo_projectile = pygame.image.load("assets/images/warrior/Skillwave_MasterYi.png").convert_alpha()
+karthus_projectile = pygame.image.load("assets/images/warrior/Skillwave_Karthus.png").convert_alpha()
+masteryi_projectile = pygame.image.load("assets/images/warrior/Skillwave_MasterYi.png").convert_alpha()
+cassiopeia_projectile = pygame.image.load("assets/images/warrior/Skillwave_Karthus.png").convert_alpha()
 
 #load vicory image
 victory_img = pygame.image.load("assets/images/icons/victory.png").convert_alpha()
@@ -104,7 +127,7 @@ player1_img = pygame.image.load("assets/images/icons/player1.png").convert_alpha
 player2_img = pygame.image.load("assets/images/icons/player2.png").convert_alpha()
 
 #define number of steps in each animation
-YONE_ANIMATION_STEPS = [8, 8, 2, 6, 6, 4, 6]
+YASUO_ANIMATION_STEPS = [8, 8, 2, 6, 6, 4, 6]
 KARTHUS_ANIMATION_STEPS = [8, 8, 1, 8, 8, 3, 7]
 MASTERYI_ANIMATION_STEPS = [10, 8, 1, 7, 7, 3, 7]
 CASSIOPEIA_ANIMATION_STEPS = [9, 9, 1, 16, 16, 3, 8]
@@ -138,19 +161,19 @@ def draw_avatar(avatar1, avatar2):
   
 
 #create two instances of fighters
-yone_1 = Fighter(1, 200, 310, False, YONE_DATA, yone_sheet, YONE_ANIMATION_STEPS, sword_fx)
-yone_2 = Fighter(2, 700, 310, True, YONE_DATA, yone_sheet, YONE_ANIMATION_STEPS, sword_fx)
-karthus_1 = Fighter(1, 200, 310, False, KARTHUS_DATA, karthus_sheet, KARTHUS_ANIMATION_STEPS, magic_fx)
-karthus_2 = Fighter(2, 700, 310, True, KARTHUS_DATA, karthus_sheet, KARTHUS_ANIMATION_STEPS, magic_fx)
-masteryi_1 = Fighter(1, 200, 310, False, MASTERYI_DATA, masteryi_sheet, MASTERYI_ANIMATION_STEPS, sword_fx)
-masteryi_2 = Fighter(2, 700, 310, True, MASTERYI_DATA, masteryi_sheet, MASTERYI_ANIMATION_STEPS, sword_fx)
-cassiopeia_1 = Fighter(1, 200, 310, False, CASSIOPEIA_DATA, cassiopeia_sheet, CASSIOPEIA_ANIMATION_STEPS, magic_fx)
-cassiopeia_2 = Fighter(2, 700, 310, True, CASSIOPEIA_DATA, cassiopeia_sheet, CASSIOPEIA_ANIMATION_STEPS, magic_fx)
+yasuo_1 = Fighter(1, 200, 310, False, YASUO_DATA, yasuo_sheet, YASUO_ANIMATION_STEPS, sword_fx, object_yasuo_data, yasuo_projectile)
+yasuo_2 = Fighter(2, 700, 310, True, YASUO_DATA, yasuo_sheet, YASUO_ANIMATION_STEPS, sword_fx, object_yasuo_data, yasuo_projectile)
+karthus_1 = Fighter(1, 200, 310, False, KARTHUS_DATA, karthus_sheet, KARTHUS_ANIMATION_STEPS, magic_fx, object_karthus_data, karthus_projectile)
+karthus_2 = Fighter(2, 700, 310, True, KARTHUS_DATA, karthus_sheet, KARTHUS_ANIMATION_STEPS, magic_fx, object_karthus_data, karthus_projectile)
+masteryi_1 = Fighter(1, 200, 310, False, MASTERYI_DATA, masteryi_sheet, MASTERYI_ANIMATION_STEPS, sword_fx, object_masteryi_data, masteryi_projectile)
+masteryi_2 = Fighter(2, 700, 310, True, MASTERYI_DATA, masteryi_sheet, MASTERYI_ANIMATION_STEPS, sword_fx, object_masteryi_data, masteryi_projectile)
+cassiopeia_1 = Fighter(1, 200, 310, False, CASSIOPEIA_DATA, cassiopeia_sheet, CASSIOPEIA_ANIMATION_STEPS, magic_fx, object_cassiopeia_data, cassiopeia_projectile)
+cassiopeia_2 = Fighter(2, 700, 310, True, CASSIOPEIA_DATA, cassiopeia_sheet, CASSIOPEIA_ANIMATION_STEPS, magic_fx, object_cassiopeia_data, cassiopeia_projectile)
 
-fighter_1 = type(yone_1)
-fighter_2 = type(yone_1)
-avatar_1 = type(avatar_yone)
-avatar_2 = type(avatar_yone)
+fighter_1 = type(yasuo_1)
+fighter_2 = type(yasuo_1)
+avatar_1 = type(avatar_yasuo)
+avatar_2 = type(avatar_yasuo)
 
 #game loop
 run = True
@@ -173,23 +196,23 @@ while run:
       game_state = "menu"
 
     #draw character buttons
-    yone_button.draw_border(screen)
+    yasuo_button.draw_border(screen)
     karthus_button.draw_border(screen)
     masteryi_button.draw_border(screen)
     cassiopeia_button.draw_border(screen)
 
     #write character names
-    draw_text("Yone", name_font, BLACK, 100, 350)
+    draw_text("Yasuo", name_font, BLACK, 100, 350)
     draw_text("Karthus", name_font, BLACK, 300, 350)
     draw_text("Master Yi", name_font, BLACK, 500, 350)
     draw_text("Cassiopeia", name_font, BLACK, 700, 350)
-    if yone_check[0] == True:
+    if yasuo_check[0] == True:
       screen.blit(player1_img, (80, 212))
-    if yone_check[1] == True:
+    if yasuo_check[1] == True:
       screen.blit(player2_img, (150, 212))
       if (pygame.time.get_ticks() - before_player2 > 2000):
         choose_character = 0
-        yone_check = [False, False]
+        yasuo_check = [False, False]
         karthus_check = [False, False]
         masteryi_check = [False, False]
         cassiopeia_check = [False, False]
@@ -200,7 +223,7 @@ while run:
       screen.blit(player2_img, (350, 212))
       if (pygame.time.get_ticks() - before_player2 > 2000):
         choose_character = 0
-        yone_check = [False, False]
+        yasuo_check = [False, False]
         karthus_check = [False, False]
         masteryi_check = [False, False]
         cassiopeia_check = [False, False]
@@ -211,7 +234,7 @@ while run:
       screen.blit(player2_img, (550, 212))
       if (pygame.time.get_ticks() - before_player2 > 2000):
         choose_character = 0
-        yone_check = [False, False]
+        yasuo_check = [False, False]
         karthus_check = [False, False]
         masteryi_check = [False, False]
         cassiopeia_check = [False, False]
@@ -222,21 +245,21 @@ while run:
       screen.blit(player2_img, (750, 212))
       if (pygame.time.get_ticks() - before_player2 > 2000):
         choose_character = 0
-        yone_check = [False, False]
+        yasuo_check = [False, False]
         karthus_check = [False, False]
         masteryi_check = [False, False]
         cassiopeia_check = [False, False]
         game_state = "game"
-    if yone_button.draw(screen) and choose_character < 2:
+    if yasuo_button.draw(screen) and choose_character < 2:
       if choose_character == False:
-        fighter_1 = yone_1
-        avatar_1 = avatar_yone
-        yone_check[0] = True
+        fighter_1 = yasuo_1
+        avatar_1 = avatar_yasuo
+        yasuo_check[0] = True
         choose_character += 1
       else:
-        fighter_2 = yone_2
-        avatar_2 = avatar_yone
-        yone_check[1] = True
+        fighter_2 = yasuo_2
+        avatar_2 = avatar_yasuo
+        yasuo_check[1] = True
         choose_character += 1
         before_player2 = pygame.time.get_ticks()
 
@@ -306,8 +329,8 @@ while run:
         last_count_update = pygame.time.get_ticks()
 
     #update fighters
-    fighter_1.update()
-    fighter_2.update()
+    fighter_1.update(fighter_2)
+    fighter_2.update(fighter_1)
 
     #draw fighters
     fighter_1.draw(screen)
@@ -335,14 +358,14 @@ while run:
         fighter_2.health = 100
         fighter_1.alive = True
         fighter_1.health = 100
-        yone_1 = Fighter(1, 200, 310, False, YONE_DATA, yone_sheet, YONE_ANIMATION_STEPS, sword_fx)
-        yone_2 = Fighter(2, 700, 310, True, YONE_DATA, yone_sheet, YONE_ANIMATION_STEPS, sword_fx)
-        karthus_1 = Fighter(1, 200, 310, False, KARTHUS_DATA, karthus_sheet, KARTHUS_ANIMATION_STEPS, magic_fx)
-        karthus_2 = Fighter(2, 700, 310, True, KARTHUS_DATA, karthus_sheet, KARTHUS_ANIMATION_STEPS, magic_fx)
-        masteryi_1 = Fighter(1, 200, 310, False, MASTERYI_DATA, masteryi_sheet, MASTERYI_ANIMATION_STEPS, sword_fx)
-        masteryi_2 = Fighter(2, 700, 310, True, MASTERYI_DATA, masteryi_sheet, MASTERYI_ANIMATION_STEPS, sword_fx)
-        cassiopeia_1 = Fighter(1, 200, 310, False, CASSIOPEIA_DATA, cassiopeia_sheet, CASSIOPEIA_ANIMATION_STEPS, magic_fx)
-        cassiopeia_2 = Fighter(2, 700, 310, True, CASSIOPEIA_DATA, cassiopeia_sheet, CASSIOPEIA_ANIMATION_STEPS, magic_fx)
+        yasuo_1 = Fighter(1, 200, 310, False, YASUO_DATA, yasuo_sheet, YASUO_ANIMATION_STEPS, sword_fx, object_yasuo_data, yasuo_projectile)
+        yasuo_2 = Fighter(2, 700, 310, True, YASUO_DATA, yasuo_sheet, YASUO_ANIMATION_STEPS, sword_fx, object_yasuo_data, yasuo_projectile)
+        karthus_1 = Fighter(1, 200, 310, False, KARTHUS_DATA, karthus_sheet, KARTHUS_ANIMATION_STEPS, magic_fx, object_karthus_data, karthus_projectile)
+        karthus_2 = Fighter(2, 700, 310, True, KARTHUS_DATA, karthus_sheet, KARTHUS_ANIMATION_STEPS, magic_fx, object_karthus_data, karthus_projectile)
+        masteryi_1 = Fighter(1, 200, 310, False, MASTERYI_DATA, masteryi_sheet, MASTERYI_ANIMATION_STEPS, sword_fx, object_masteryi_data, masteryi_projectile)
+        masteryi_2 = Fighter(2, 700, 310, True, MASTERYI_DATA, masteryi_sheet, MASTERYI_ANIMATION_STEPS, sword_fx, object_masteryi_data, masteryi_projectile)
+        cassiopeia_1 = Fighter(1, 200, 310, False, CASSIOPEIA_DATA, cassiopeia_sheet, CASSIOPEIA_ANIMATION_STEPS, magic_fx, object_cassiopeia_data, cassiopeia_projectile)
+        cassiopeia_2 = Fighter(2, 700, 310, True, CASSIOPEIA_DATA, cassiopeia_sheet, CASSIOPEIA_ANIMATION_STEPS, magic_fx, object_cassiopeia_data, cassiopeia_projectile)
 
 
   #event handler

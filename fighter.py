@@ -1,7 +1,44 @@
 import pygame
+import time
+
+class Projectile():
+    def __init__(self, x, y, flip, object_data, object_image):
+        self.size = object_data[0] #16
+        self.image_scale = object_data[1] #20
+        self.offset = object_data[2] #[12, 5]
+        self.image  = object_image
+        self.image = pygame.transform.scale(self.image, (self.size * self.image_scale, self.size * self.image_scale))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.flip = flip
+        self.speed = 15
+        #self.image2 = self.load_images(self.image, 1)
+
+
+    def move(self):
+        # move projectile in the correct direction
+        if self.flip:
+            self.rect.x -= self.speed
+        else:
+            self.rect.x += self.speed
+    
+    #def load_images(self, skill_sheet, skill_steps):
+      #animation_list = []
+      #for x in range(skill_steps):
+        #temp_img = self.image.subsurface(x * self.size, self.size, self.size, self.size)
+        #animation_list.append(pygame.transform.scale(temp_img, (self.size * self.image_scale, self.size * self.image_scale)))
+      #return animation_list
+    
+    def draw(self, surface):
+      if self.flip:
+            surface.blit(pygame.transform.flip(self.image, True, False), (self.rect.x - (self.offset[0] * self.image_scale), self.rect.y - (self.offset[1] * self.image_scale)))
+      else:
+            surface.blit(self.image, (self.rect.x - (self.offset[0] * self.image_scale) + 100, self.rect.y - (self.offset[1] * self.image_scale)))
+
 
 class Fighter():
-  def __init__(self, player, x, y, flip, data, sprite_sheet, animation_steps, sound):
+  def __init__(self, player, x, y, flip, data, sprite_sheet, animation_steps, sound, object_data, object_image):
     self.player = player
     self.size = data[0]
     self.image_scale = data[1]
@@ -17,13 +54,21 @@ class Fighter():
     self.running = False
     self.jump = False
     self.attacking = False
+    self.skilling = False
     self.attack_type = 0
-    self.attack_cooldown = 0
+    self.attack_cooldown = 1
     self.attack_sound = sound
     self.hit = False
     self.health = 100
     self.alive = True
-
+    self.projectiles = []
+    self.skill_cooldown = 0
+    self.attack_start_time = time.time() + 1000
+    self.label_time = 0
+    self.mana = 100
+    self.object_data = object_data
+    self.object_image = object_image
+  
 
   def load_images(self, sprite_sheet, animation_steps):
     #extract images from spritesheet
@@ -49,7 +94,7 @@ class Fighter():
     key = pygame.key.get_pressed()
 
     #can only perform other actions if not currently attacking
-    if self.attacking == False and self.alive == True and round_over == False:
+    if self.attacking == False and self.skilling == False and self.alive == True and round_over == False:
       #check player 1 controls
       if self.player == 1:
         #movement
@@ -65,13 +110,13 @@ class Fighter():
           self.jump = True
         #attack
         if key[pygame.K_r] or key[pygame.K_t]:
-          self.attack(target)
           #determine which attack type was used
           if key[pygame.K_r]:
             self.attack_type = 1
+            self.attack(target)
           if key[pygame.K_t]:
             self.attack_type = 2
-
+            self.skill1(target)
 
       #check player 2 controls
       if self.player == 2:
@@ -87,14 +132,14 @@ class Fighter():
           self.vel_y = -30
           self.jump = True
         #attack
-        if key[pygame.K_KP1] or key[pygame.K_KP2] or key[pygame.K_n] or key[pygame.K_m]:
-          self.attack(target)
+        if key[pygame.K_KP1] or key[pygame.K_KP2]:
           #determine which attack type was used
-          if key[pygame.K_KP1] or key[pygame.K_n]:
+          if key[pygame.K_KP1]:
             self.attack_type = 1
-          if key[pygame.K_KP2] or key[pygame.K_m]:
+            self.attack(target)
+          if key[pygame.K_KP2]:
             self.attack_type = 2
-
+            self.skill1(target)
 
     #apply gravity
     self.vel_y += GRAVITY
@@ -119,14 +164,14 @@ class Fighter():
     #apply attack cooldown
     if self.attack_cooldown > 0:
       self.attack_cooldown -= 1
+      self.skill_cooldown -= 1
 
     #update player position
     self.rect.x += dx
     self.rect.y += dy
 
-
   #handle animation updates
-  def update(self):
+  def update(self, target):
     #check what action the player is performing
     if self.health <= 0:
       self.health = 0
@@ -135,9 +180,8 @@ class Fighter():
     elif self.hit == True:
       self.update_action(5)#5:hit
     elif self.attacking == True:
-      if self.attack_type == 1:
-        self.update_action(3)#3:attack1
-      elif self.attack_type == 2:
+      self.update_action(3)#3:attack1
+    elif self.skilling == True:
         self.update_action(4)#4:attack2
     elif self.jump == True:
       self.update_action(2)#2:jump
@@ -145,6 +189,11 @@ class Fighter():
       self.update_action(1)#1:run
     else:
       self.update_action(0)#0:idle
+    if (self.skilling == True):
+      self.label_time = time.time() - self.attack_start_time
+    if self.label_time >= 0.3:
+      self.projectiles.append(Projectile(self.rect.x + 20, self.rect.y, self.flip, self.object_data, self.object_image))
+      self.attack_start_time = time.time() + 1000
 
     animation_cooldown = 50
     #update image
@@ -163,13 +212,27 @@ class Fighter():
         #check if an attack was executed
         if self.action == 3 or self.action == 4:
           self.attacking = False
+          self.skilling = False
           self.attack_cooldown = 20
+          self.skill_cooldown = 21
         #check if damage was taken
         if self.action == 5:
           self.hit = False
           #if the player was in the middle of an attack, then the attack is stopped
           self.attacking = False
+          self.skilling = False
           self.attack_cooldown = 20
+          self.skill_cooldown = 20
+    
+    for projectile in self.projectiles:
+      projectile.move()
+      if projectile.rect.left > 1280 or projectile.rect.right < 0:
+        self.projectiles.remove(projectile)
+      projectile_rect = pygame.Rect(projectile.rect.x, projectile.rect.y + 30, 30, 30)
+      if projectile_rect.colliderect(target.rect) and target.hit == False:
+        target.health -= 10
+        target.hit = True
+        self.projectiles.remove(projectile)
 
 
   def attack(self, target):
@@ -181,7 +244,16 @@ class Fighter():
       if attacking_rect.colliderect(target.rect):
         target.health -= 10
         target.hit = True
-
+      self.attack_cooldown = pygame.time.get_ticks()
+    
+  def skill1(self, target):
+    if self.attack_cooldown == 0:
+      #execute attack
+      self.skilling = True
+      self.attack_sound.play()
+      self.attack_start_time = time.time()
+      #self.projectiles.append(Projectile(self.rect.x, self.rect.y, self.flip))
+      self.attack_cooldown = pygame.time.get_ticks()
 
   def update_action(self, new_action):
     #check if the new action is different to the previous one
@@ -194,3 +266,6 @@ class Fighter():
   def draw(self, surface):
     img = pygame.transform.flip(self.image, self.flip, False)
     surface.blit(img, (self.rect.x - (self.offset[0] * self.image_scale), self.rect.y - (self.offset[1] * self.image_scale)))
+
+    for projectile in self.projectiles:
+      projectile.draw(surface)
