@@ -176,7 +176,6 @@ while run:
     if yone_check[0] == True:
       screen.blit(player1_img, (100, 150))
     if yone_check[1] == True:
-      before_player2 = pygame.time.get_ticks()
       screen.blit(player2_img, (100, 150))
       if (pygame.time.get_ticks() - before_player2 > 2000):
         game_state = "game"
@@ -189,14 +188,12 @@ while run:
     if masteryi_check[0] == True:
       screen.blit(player1_img, (500, 150))
     if masteryi_check[1] == True:
-      before_player2 = pygame.time.get_ticks()
       screen.blit(player2_img, (500, 150))
       if (pygame.time.get_ticks() - before_player2 > 2000):
         game_state = "game"
     if cassiopeia_check[0] == True:
       screen.blit(player1_img, (700, 150))
     if cassiopeia_check[1] == True:
-      before_player2 = pygame.time.get_ticks()
       screen.blit(player2_img, (700, 150))
       if (pygame.time.get_ticks() - before_player2 > 2000):
         game_state = "game"
@@ -206,12 +203,12 @@ while run:
         avatar_1 = avatar_yone
         yone_check[0] = True
         choose_character = True
-        before_player2 = pygame.time.get_ticks()
       else:
         fighter_2 = yone_2
         avatar_2 = avatar_yone
         yone_check[1] = True
         choose_character = False
+        before_player2 = pygame.time.get_ticks()
         
     if karthus_button.draw(screen):
       if choose_character == False:
