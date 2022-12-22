@@ -184,32 +184,48 @@ while run:
     draw_text("Master Yi", name_font, BLACK, 500, 350)
     draw_text("Cassiopeia", name_font, BLACK, 700, 350)
     if yone_check[0] == True:
-      screen.blit(player1_img, (100, 150))
+      screen.blit(player1_img, (80, 212))
     if yone_check[1] == True:
-      screen.blit(player2_img, (100, 150))
+      screen.blit(player2_img, (150, 212))
       if (pygame.time.get_ticks() - before_player2 > 2000):
         choose_character = 0
+        yone_check = [False, False]
+        karthus_check = [False, False]
+        masteryi_check = [False, False]
+        cassiopeia_check = [False, False]
         game_state = "game"
     if karthus_check[0] == True:
-      screen.blit(player1_img, (300, 150))
+      screen.blit(player1_img, (280, 212))
     if karthus_check[1] == True:
-      screen.blit(player2_img, (300, 150))
+      screen.blit(player2_img, (350, 212))
       if (pygame.time.get_ticks() - before_player2 > 2000):
         choose_character = 0
+        yone_check = [False, False]
+        karthus_check = [False, False]
+        masteryi_check = [False, False]
+        cassiopeia_check = [False, False]
         game_state = "game"
     if masteryi_check[0] == True:
-      screen.blit(player1_img, (500, 150))
+      screen.blit(player1_img, (480, 212))
     if masteryi_check[1] == True:
-      screen.blit(player2_img, (500, 150))
+      screen.blit(player2_img, (550, 212))
       if (pygame.time.get_ticks() - before_player2 > 2000):
         choose_character = 0
+        yone_check = [False, False]
+        karthus_check = [False, False]
+        masteryi_check = [False, False]
+        cassiopeia_check = [False, False]
         game_state = "game"
     if cassiopeia_check[0] == True:
-      screen.blit(player1_img, (700, 150))
+      screen.blit(player1_img, (680, 212))
     if cassiopeia_check[1] == True:
-      screen.blit(player2_img, (700, 150))
+      screen.blit(player2_img, (750, 212))
       if (pygame.time.get_ticks() - before_player2 > 2000):
         choose_character = 0
+        yone_check = [False, False]
+        karthus_check = [False, False]
+        masteryi_check = [False, False]
+        cassiopeia_check = [False, False]
         game_state = "game"
     if yone_button.draw(screen) and choose_character < 2:
       if choose_character == False:
