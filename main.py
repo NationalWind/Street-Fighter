@@ -65,7 +65,7 @@ bg_image = pygame.image.load("assets/images/background/background.jpg").convert_
 
 #load buttons
 back_image = pygame.image.load("assets/images/buttons/back.png").convert_alpha()
-back_button = Button(0, 0, back_image, 1)
+back_button = Button(0, 0, back_image, 0.5)
 start_image = pygame.image.load("assets/images/buttons/start.png").convert_alpha()
 start_button = Button(322, 50, start_image, 1)
 setting_image = pygame.image.load("assets/images/buttons/setting.png").convert_alpha()
@@ -80,10 +80,14 @@ avatar_masteryi = pygame.image.load("assets/images/avatar/masteryi.png").convert
 avatar_cassiopeia = pygame.image.load("assets/images/avatar/cassiopeia.png").convert_alpha()
 
 #load character choosing buttons
-yone_button = Button(100, 50, avatar_yone, 1)
-karthus_button = Button(300, 50, avatar_karthus, 1)
-masteryi_button = Button(500, 50, avatar_masteryi, 1)
-cassiopeia_button = Button(700, 50, avatar_cassiopeia, 1)
+yone_button = Button(100, 250, avatar_yone, 1)
+yone_check = [False, False]
+karthus_button = Button(300, 250, avatar_karthus, 1)
+karthus_check = [False, False]
+masteryi_button = Button(500, 250, avatar_masteryi, 1)
+masteryi_check = [False, False]
+cassiopeia_button = Button(700, 250, avatar_cassiopeia, 1)
+cassiopeia_check = [False, False]
 
 
 #load spritesheets
@@ -95,6 +99,8 @@ cassiopeia_sheet = pygame.image.load("assets/images/characters/cassiopeia.png").
 
 #load vicory image
 victory_img = pygame.image.load("assets/images/icons/victory.png").convert_alpha()
+player1_img = pygame.image.load("assets/images/icons/player1.png").convert_alpha()
+player2_img = pygame.image.load("assets/images/icons/player2.png").convert_alpha()
 
 #define number of steps in each animation
 YONE_ANIMATION_STEPS = [8, 8, 2, 6, 6, 4, 6]
@@ -143,6 +149,7 @@ fighter_1 = type(yone_1)
 fighter_2 = type(yone_1)
 avatar_1 = type(avatar_yone)
 avatar_2 = type(avatar_yone)
+
 #game loop
 run = True
 while run:
@@ -162,49 +169,88 @@ while run:
     screen.fill(WHITE)
     if back_button.draw(screen):
       game_state = "menu"
+    yone_button.draw_border(screen)
+    karthus_button.draw_border(screen)
+    masteryi_button.draw_border(screen)
+    cassiopeia_button.draw_border(screen)
+    if yone_check[0] == True:
+      screen.blit(player1_img, (100, 150))
+    if yone_check[1] == True:
+      before_player2 = pygame.time.get_ticks()
+      screen.blit(player2_img, (100, 150))
+      if (pygame.time.get_ticks() - before_player2 > 2000):
+        game_state = "game"
+    if karthus_check[0] == True:
+      screen.blit(player1_img, (300, 150))
+    if karthus_check[1] == True:
+      screen.blit(player2_img, (300, 150))
+      if (pygame.time.get_ticks() - before_player2 > 2000):
+        game_state = "game"
+    if masteryi_check[0] == True:
+      screen.blit(player1_img, (500, 150))
+    if masteryi_check[1] == True:
+      before_player2 = pygame.time.get_ticks()
+      screen.blit(player2_img, (500, 150))
+      if (pygame.time.get_ticks() - before_player2 > 2000):
+        game_state = "game"
+    if cassiopeia_check[0] == True:
+      screen.blit(player1_img, (700, 150))
+    if cassiopeia_check[1] == True:
+      before_player2 = pygame.time.get_ticks()
+      screen.blit(player2_img, (700, 150))
+      if (pygame.time.get_ticks() - before_player2 > 2000):
+        game_state = "game"
     if yone_button.draw(screen):
       if choose_character == False:
         fighter_1 = yone_1
         avatar_1 = avatar_yone
+        yone_check[0] = True
         choose_character = True
+        before_player2 = pygame.time.get_ticks()
       else:
         fighter_2 = yone_2
         avatar_2 = avatar_yone
+        yone_check[1] = True
         choose_character = False
-        game_state = "game"
         
     if karthus_button.draw(screen):
       if choose_character == False:
         fighter_1 = karthus_1
         avatar_1 = avatar_karthus
+        karthus_check[0] = True
         choose_character = True
       else:
         fighter_2 = karthus_2
         avatar_2 = avatar_karthus
         choose_character = False
-        game_state = "game"
+        karthus_check[1] = True
+        before_player2 = pygame.time.get_ticks()
         
     if masteryi_button.draw(screen):
       if choose_character == False:
         fighter_1 = masteryi_1
         avatar_1 = avatar_masteryi
+        masteryi_check[0] = True
         choose_character = True
       else:
         fighter_2 = masteryi_2
         avatar_2 = avatar_masteryi
+        masteryi_check[1] = True
         choose_character = False
-        game_state = "game"
+        before_player2 = pygame.time.get_ticks()
         
     if cassiopeia_button.draw(screen):
       if choose_character == False:
         fighter_1 = cassiopeia_1
         avatar_1 = avatar_cassiopeia
+        cassiopeia_check[0] = True
         choose_character = True
       else:
         fighter_2 = cassiopeia_2
         avatar_2 = avatar_cassiopeia
+        cassiopeia_check[1] = True
         choose_character = False
-        game_state = "game"
+        before_player2 = pygame.time.get_ticks()
 
   if game_state == "game":
     clock.tick(FPS)
