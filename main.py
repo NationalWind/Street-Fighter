@@ -19,6 +19,7 @@ clock = pygame.time.Clock()
 FPS = 60
 
 #define colours
+BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
@@ -30,7 +31,7 @@ last_count_update = pygame.time.get_ticks()
 score = [0, 0]#player scores. [P1, P2]
 round_over = False
 ROUND_OVER_COOLDOWN = 2000
-choose_character = False
+choose_character = 0
 
 
 #define fighter variables
@@ -110,6 +111,7 @@ CASSIOPEIA_ANIMATION_STEPS = [9, 9, 1, 16, 16, 3, 8]
   
 #define font
 count_font = pygame.font.Font("assets/fonts/turok.ttf", 80)
+name_font = pygame.font.Font("assets/fonts/turok.ttf", 40)
 score_font = pygame.font.Font("assets/fonts/turok.ttf", 30)
 
 #function for drawing text
@@ -169,84 +171,96 @@ while run:
     screen.fill(WHITE)
     if back_button.draw(screen):
       game_state = "menu"
+
+    #draw character buttons
     yone_button.draw_border(screen)
     karthus_button.draw_border(screen)
     masteryi_button.draw_border(screen)
     cassiopeia_button.draw_border(screen)
+
+    #write character names
+    draw_text("Yone", name_font, BLACK, 100, 350)
+    draw_text("Karthus", name_font, BLACK, 300, 350)
+    draw_text("Master Yi", name_font, BLACK, 500, 350)
+    draw_text("Cassiopeia", name_font, BLACK, 700, 350)
     if yone_check[0] == True:
       screen.blit(player1_img, (100, 150))
     if yone_check[1] == True:
       screen.blit(player2_img, (100, 150))
       if (pygame.time.get_ticks() - before_player2 > 2000):
+        choose_character = 0
         game_state = "game"
     if karthus_check[0] == True:
       screen.blit(player1_img, (300, 150))
     if karthus_check[1] == True:
       screen.blit(player2_img, (300, 150))
       if (pygame.time.get_ticks() - before_player2 > 2000):
+        choose_character = 0
         game_state = "game"
     if masteryi_check[0] == True:
       screen.blit(player1_img, (500, 150))
     if masteryi_check[1] == True:
       screen.blit(player2_img, (500, 150))
       if (pygame.time.get_ticks() - before_player2 > 2000):
+        choose_character = 0
         game_state = "game"
     if cassiopeia_check[0] == True:
       screen.blit(player1_img, (700, 150))
     if cassiopeia_check[1] == True:
       screen.blit(player2_img, (700, 150))
       if (pygame.time.get_ticks() - before_player2 > 2000):
+        choose_character = 0
         game_state = "game"
-    if yone_button.draw(screen):
+    if yone_button.draw(screen) and choose_character < 2:
       if choose_character == False:
         fighter_1 = yone_1
         avatar_1 = avatar_yone
         yone_check[0] = True
-        choose_character = True
+        choose_character += 1
       else:
         fighter_2 = yone_2
         avatar_2 = avatar_yone
         yone_check[1] = True
-        choose_character = False
+        choose_character += 1
         before_player2 = pygame.time.get_ticks()
-        
-    if karthus_button.draw(screen):
+
+    if karthus_button.draw(screen) and choose_character < 2:
       if choose_character == False:
         fighter_1 = karthus_1
         avatar_1 = avatar_karthus
         karthus_check[0] = True
-        choose_character = True
+        choose_character += 1
       else:
         fighter_2 = karthus_2
         avatar_2 = avatar_karthus
-        choose_character = False
         karthus_check[1] = True
+        choose_character += 1
         before_player2 = pygame.time.get_ticks()
         
-    if masteryi_button.draw(screen):
+    if masteryi_button.draw(screen) and choose_character < 2:
       if choose_character == False:
         fighter_1 = masteryi_1
         avatar_1 = avatar_masteryi
         masteryi_check[0] = True
-        choose_character = True
+        choose_character += 1
       else:
         fighter_2 = masteryi_2
         avatar_2 = avatar_masteryi
         masteryi_check[1] = True
-        choose_character = False
+        choose_character += 1
         before_player2 = pygame.time.get_ticks()
         
-    if cassiopeia_button.draw(screen):
+    if cassiopeia_button.draw(screen) and choose_character < 2:
       if choose_character == False:
         fighter_1 = cassiopeia_1
         avatar_1 = avatar_cassiopeia
         cassiopeia_check[0] = True
-        choose_character = True
+        choose_character += 1
       else:
         fighter_2 = cassiopeia_2
         avatar_2 = avatar_cassiopeia
         cassiopeia_check[1] = True
-        choose_character = False
+        choose_character += 1
         before_player2 = pygame.time.get_ticks()
 
   if game_state == "game":
