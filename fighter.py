@@ -248,7 +248,7 @@ class Fighter():
       self.attack_cooldown = pygame.time.get_ticks()
     
   def ranged_skill(self, target):
-    if self.attack_cooldown == 0:
+    if self.attack_cooldown == 0 and self.mana >= 30:
       #execute attack
       self.mana -= 30
       self.skilling = True

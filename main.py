@@ -136,13 +136,20 @@ CASSIOPEIA_ANIMATION_STEPS = [9, 9, 1, 16, 16, 3, 8]
   
 #define font
 count_font = pygame.font.Font("assets/fonts/turok.ttf", 80)
-name_font = pygame.font.Font("assets/fonts/turok.ttf", 40)
+name_font = pygame.font.Font("assets/fonts/gunfighter-academy.ttf", 20)
 score_font = pygame.font.Font("assets/fonts/turok.ttf", 30)
 
 #function for drawing text
 def draw_text(text, font, text_col, x, y):
   img = font.render(text, True, text_col)
   screen.blit(img, (x, y))
+
+def draw_text_right(text, font, text_col, x, y):
+  img = font.render(text, True, text_col)
+  text_rect = font.render(text, True, text_col).get_rect()
+  text_rect.x = x - text_rect.width
+  text_rect.y = y
+  screen.blit(img, text_rect)
 
 #function for drawing background
 def draw_bg():
@@ -178,10 +185,13 @@ masteryi_2 = Fighter(2, 700, 310, True, MASTERYI_DATA, masteryi_sheet, MASTERYI_
 cassiopeia_1 = Fighter(1, 200, 310, False, CASSIOPEIA_DATA, cassiopeia_sheet, CASSIOPEIA_ANIMATION_STEPS, magic_fx, object_cassiopeia_data, cassiopeia_projectile)
 cassiopeia_2 = Fighter(2, 700, 310, True, CASSIOPEIA_DATA, cassiopeia_sheet, CASSIOPEIA_ANIMATION_STEPS, magic_fx, object_cassiopeia_data, cassiopeia_projectile)
 
+#init variables
 fighter_1 = type(yasuo_1)
 fighter_2 = type(yasuo_1)
 avatar_1 = type(avatar_yasuo)
 avatar_2 = type(avatar_yasuo)
+name_1 = ""
+name_2 = ""
 
 #game loop
 run = True
@@ -264,55 +274,63 @@ while run:
         game_state = "game"
         
     if yasuo_button.draw(screen) and choose_character < 2:
-      if choose_character == False:
+      if choose_character == 0:
         fighter_1 = yasuo_1
         avatar_1 = avatar_yasuo
         yasuo_check[0] = True
         choose_character += 1
-      else:
+        name_1 = "Yasuo"
+      elif choos_character == 1:
         fighter_2 = yasuo_2
         avatar_2 = avatar_yasuo
         yasuo_check[1] = True
         choose_character += 1
+        name_2 = "Yasuo"
         before_player2 = pygame.time.get_ticks()
 
     if karthus_button.draw(screen) and choose_character < 2:
-      if choose_character == False:
+      if choose_character == 0:
         fighter_1 = karthus_1
         avatar_1 = avatar_karthus
         karthus_check[0] = True
         choose_character += 1
-      else:
+        name_1 = "Karthus"
+      elif choose_character == 1:
         fighter_2 = karthus_2
         avatar_2 = avatar_karthus
         karthus_check[1] = True
         choose_character += 1
+        name_2 = "Karthus"
         before_player2 = pygame.time.get_ticks()
         
     if masteryi_button.draw(screen) and choose_character < 2:
-      if choose_character == False:
+      if choose_character == 0:
         fighter_1 = masteryi_1
         avatar_1 = avatar_masteryi
         masteryi_check[0] = True
         choose_character += 1
-      else:
+        name_1 = "Master Yi"
+      elif choose_character == 1:
         fighter_2 = masteryi_2
         avatar_2 = avatar_masteryi
         masteryi_check[1] = True
         choose_character += 1
+        name_2 = "Master Yi"
         before_player2 = pygame.time.get_ticks()
         
     if cassiopeia_button.draw(screen) and choose_character < 2:
-      if choose_character == False:
+      if choose_character == 0:
         fighter_1 = cassiopeia_1
         avatar_1 = avatar_cassiopeia
         cassiopeia_check[0] = True
         choose_character += 1
-      else:
+        name_1 = "Cassiopeia"
+      elif choose_character == 1:
         fighter_2 = cassiopeia_2
         avatar_2 = avatar_cassiopeia
         cassiopeia_check[1] = True
         choose_character += 1
+        name_2 = "Cassiopeia"
         before_player2 = pygame.time.get_ticks()
 
   if game_state == "game":
@@ -329,7 +347,9 @@ while run:
     draw_mana_bar(fighter_2.mana, 580, 55)
     draw_text("P1: " + str(score[0]), score_font, RED, 360, 60)
     draw_text("P2: " + str(score[1]), score_font, BLUE, 580, 60)
-
+    draw_text(name_1, name_font, RED, 20, 70)
+    draw_text_right(name_2, name_font, BLUE, 985, 70)
+    
     #update countdown
     if intro_count <= 0:
       #move fighters
@@ -377,6 +397,8 @@ while run:
         fighter_2.health = 100
         fighter_1.alive = True
         fighter_1.health = 100
+        fighter_1.mana = 100
+        fighter_2.mana = 100
         yasuo_1 = Fighter(1, 200, 310, False, YASUO_DATA, yasuo_sheet, YASUO_ANIMATION_STEPS, sword_fx, object_yasuo_data, yasuo_projectile)
         yasuo_2 = Fighter(2, 700, 310, True, YASUO_DATA, yasuo_sheet, YASUO_ANIMATION_STEPS, sword_fx, object_yasuo_data, yasuo_projectile)
         karthus_1 = Fighter(1, 200, 310, False, KARTHUS_DATA, karthus_sheet, KARTHUS_ANIMATION_STEPS, magic_fx, object_karthus_data, karthus_projectile)
