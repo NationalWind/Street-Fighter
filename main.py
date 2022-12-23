@@ -18,12 +18,14 @@ game_state = "menu"
 clock = pygame.time.Clock()
 FPS = 60
 
-#define colours
+#define colors
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
+CYAN = (0, 255, 255)
+GRAY = (127, 127, 127)
 
 #define game variables
 intro_count = 3
@@ -154,6 +156,12 @@ def draw_health_bar(health, x, y):
   pygame.draw.rect(screen, RED, (x, y, 400, 30))
   pygame.draw.rect(screen, YELLOW, (x, y, 400 * ratio, 30))
 
+def draw_mana_bar(mana, x, y):
+  ratio = mana / 100
+  pygame.draw.rect(screen, WHITE, (x - 2, y - 2, 404, 12))
+  pygame.draw.rect(screen, GRAY, (x, y, 400, 8))
+  pygame.draw.rect(screen, CYAN, (x, y, 400 * ratio, 8))
+
 #function for drawing avatar
 def draw_avatar(avatar1, avatar2):
   screen.blit(avatar1, (400, 0))
@@ -206,6 +214,7 @@ while run:
     draw_text("Karthus", name_font, BLACK, 300, 350)
     draw_text("Master Yi", name_font, BLACK, 500, 350)
     draw_text("Cassiopeia", name_font, BLACK, 700, 350)
+    
     if yasuo_check[0] == True:
       screen.blit(player1_img, (80, 212))
     if yasuo_check[1] == True:
@@ -217,6 +226,7 @@ while run:
         masteryi_check = [False, False]
         cassiopeia_check = [False, False]
         game_state = "game"
+        
     if karthus_check[0] == True:
       screen.blit(player1_img, (280, 212))
     if karthus_check[1] == True:
@@ -228,6 +238,7 @@ while run:
         masteryi_check = [False, False]
         cassiopeia_check = [False, False]
         game_state = "game"
+        
     if masteryi_check[0] == True:
       screen.blit(player1_img, (480, 212))
     if masteryi_check[1] == True:
@@ -239,6 +250,7 @@ while run:
         masteryi_check = [False, False]
         cassiopeia_check = [False, False]
         game_state = "game"
+        
     if cassiopeia_check[0] == True:
       screen.blit(player1_img, (680, 212))
     if cassiopeia_check[1] == True:
@@ -250,6 +262,7 @@ while run:
         masteryi_check = [False, False]
         cassiopeia_check = [False, False]
         game_state = "game"
+        
     if yasuo_button.draw(screen) and choose_character < 2:
       if choose_character == False:
         fighter_1 = yasuo_1
@@ -312,6 +325,8 @@ while run:
     #show player stats
     draw_health_bar(fighter_1.health, 20, 20)
     draw_health_bar(fighter_2.health, 580, 20)
+    draw_mana_bar(fighter_1.mana, 20, 55)
+    draw_mana_bar(fighter_2.mana, 580, 55)
     draw_text("P1: " + str(score[0]), score_font, RED, 360, 60)
     draw_text("P2: " + str(score[1]), score_font, BLUE, 580, 60)
 
@@ -331,6 +346,10 @@ while run:
     #update fighters
     fighter_1.update(fighter_2)
     fighter_2.update(fighter_1)
+
+    #update mana for fighters
+    fighter_1.update_mana()
+    fighter_2.update_mana()
 
     #draw fighters
     fighter_1.draw(screen)

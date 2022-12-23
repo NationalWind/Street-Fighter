@@ -32,6 +32,6 @@ class Button:
         return action
 
     def draw_border(self, surface):
-        border_width = 5
+        border_width = 3
         border_color = (0, 0, 0)
         pygame.draw.rect(surface, border_color, self.rect, border_width)

@@ -66,6 +66,7 @@ class Fighter():
     self.attack_start_time = time.time() + 1000
     self.label_time = 0
     self.mana = 100
+    self.mana_increase_time = 0
     self.object_data = object_data
     self.object_image = object_image
   
@@ -116,7 +117,7 @@ class Fighter():
             self.attack(target)
           if key[pygame.K_t]:
             self.attack_type = 2
-            self.skill1(target)
+            self.ranged_skill(target)
 
       #check player 2 controls
       if self.player == 2:
@@ -139,7 +140,7 @@ class Fighter():
             self.attack(target)
           if key[pygame.K_KP2]:
             self.attack_type = 2
-            self.skill1(target)
+            self.ranged_skill(target)
 
     #apply gravity
     self.vel_y += GRAVITY
@@ -246,9 +247,10 @@ class Fighter():
         target.hit = True
       self.attack_cooldown = pygame.time.get_ticks()
     
-  def skill1(self, target):
+  def ranged_skill(self, target):
     if self.attack_cooldown == 0:
       #execute attack
+      self.mana -= 30
       self.skilling = True
       self.attack_sound.play()
       self.attack_start_time = time.time()
@@ -262,6 +264,13 @@ class Fighter():
       #update the animation settings
       self.frame_index = 0
       self.update_time = pygame.time.get_ticks()
+
+  def update_mana(self):
+    current_time = pygame.time.get_ticks()
+    if current_time - self.mana_increase_time >= 1000:
+      if (self.mana < 100):
+          self.mana += 5
+      self.mana_increase_time = current_time
 
   def draw(self, surface):
     img = pygame.transform.flip(self.image, self.flip, False)
