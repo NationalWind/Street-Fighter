@@ -12,7 +12,7 @@ SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 600
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Brawler")
+pygame.display.set_caption("Street Fighter")
 game_state = "menu"
 
 #set framerate
@@ -35,6 +35,7 @@ score = [0, 0]#player scores. [P1, P2]
 round_over = False
 ROUND_OVER_COOLDOWN = 2000
 choose_character = 0
+sound_fx = 0
 
 
 #define fighter variables
@@ -87,7 +88,7 @@ yasuo_fx.set_volume(0.75)
 #load background image
 bg_image = pygame.image.load("assets/images/background/background.jpg").convert_alpha()
 
-#load buttons
+#load beginning buttons
 back_image = pygame.image.load("assets/images/buttons/back.png").convert_alpha()
 back_button = Button(0, 0, back_image, 0.5)
 start_image = pygame.image.load("assets/images/buttons/start.png").convert_alpha()
@@ -96,6 +97,11 @@ setting_image = pygame.image.load("assets/images/buttons/setting.png").convert_a
 setting_button = Button(322, 250, setting_image, 1)
 exit_image = pygame.image.load("assets/images/buttons/exit.png").convert_alpha()
 exit_button = Button(322, 450, exit_image, 1)
+sound_on_image = pygame.image.load("assets/images/buttons/sound_on.png").convert_alpha()
+sound_on_button = Button(300, 50, sound_on_image, 2)
+sound_off_image = pygame.image.load("assets/images/buttons/sound_off.png").convert_alpha()
+sound_off_button = Button(500, 50, sound_off_image, 2)
+
 
 #load avatar
 avatar_yasuo = pygame.image.load("assets/images/avatar/yasuo.png").convert_alpha()
@@ -126,10 +132,27 @@ karthus_projectile = pygame.image.load("assets/images/warrior/Skillwave_Karthus.
 masteryi_projectile = pygame.image.load("assets/images/warrior/Skillwave_MasterYi.png").convert_alpha()
 cassiopeia_projectile = pygame.image.load("assets/images/warrior/Skillwave_Karthus.png").convert_alpha()
 
-#load vicory image
+#load game icons image
 victory_img = pygame.image.load("assets/images/icons/victory.png").convert_alpha()
 player1_img = pygame.image.load("assets/images/icons/player1.png").convert_alpha()
 player2_img = pygame.image.load("assets/images/icons/player2.png").convert_alpha()
+sound_img = pygame.image.load("assets/images/icons/sound.png").convert_alpha()
+button_img = pygame.image.load("assets/images/icons/button.png").convert_alpha()
+
+#load key images
+w_key_image = pygame.image.load("assets/images/keys/W-Key.png").convert_alpha()
+a_key_image = pygame.image.load("assets/images/keys/A-Key.png").convert_alpha()
+s_key_image = pygame.image.load("assets/images/keys/S-Key.png").convert_alpha()
+d_key_image = pygame.image.load("assets/images/keys/D-Key.png").convert_alpha()
+r_key_image = pygame.image.load("assets/images/keys/R-Key.png").convert_alpha()
+t_key_image = pygame.image.load("assets/images/keys/T-Key.png").convert_alpha()
+
+up_key_image = pygame.image.load("assets/images/keys/Up-Key.png").convert_alpha()
+left_key_image = pygame.image.load("assets/images/keys/Left-Key.png").convert_alpha()
+down_key_image = pygame.image.load("assets/images/keys/Down-Key.png").convert_alpha()
+right_key_image = pygame.image.load("assets/images/keys/Right-Key.png").convert_alpha()
+one_key_image = pygame.image.load("assets/images/keys/1-Key.png").convert_alpha()
+two_key_image = pygame.image.load("assets/images/keys/2-Key.png").convert_alpha()
 
 #define number of steps in each animation
 YASUO_ANIMATION_STEPS = [8, 8, 2, 6, 6, 4, 6]
@@ -203,15 +226,52 @@ while run:
     screen.fill(WHITE)
     if start_button.draw(screen):
       game_state = "character"
+      
     if setting_button.draw(screen):
       game_state = "setting"
+      
     if exit_button.draw(screen):
       run = False
+      
   if game_state == "setting":
     screen.fill(WHITE)
+    
+    screen.blit(sound_img, (150, 90))
+    screen.blit(button_img, (150, 300))
+    screen.blit(player1_img, (400, 250))
+    screen.blit(player2_img, (700, 250))
+
+    screen.blit(w_key_image, (400, 300))
+    screen.blit(s_key_image, (400, 332))
+    screen.blit(a_key_image, (368, 332))
+    screen.blit(d_key_image, (432, 332))
+    screen.blit(r_key_image, (464, 300))
+    screen.blit(t_key_image, (496, 300))
+    
+    screen.blit(up_key_image, (700, 300))
+    screen.blit(down_key_image, (700, 332))
+    screen.blit(left_key_image, (668, 332))
+    screen.blit(right_key_image, (732, 332))
+    screen.blit(one_key_image, (764, 300))
+    screen.blit(two_key_image, (796, 300))
+    
     if back_button.draw(screen):
       game_state = "menu"
-      
+    if (sound_fx % 2 == 0):
+      pygame.mixer.music.set_volume(0.5)
+      sword_fx.set_volume(0.5)
+      magic_fx.set_volume(0.75)
+      yasuo_fx.set_volume(0.75)
+      if (sound_on_button.draw(screen)):
+        sound_fx += 1
+    else:
+      pygame.mixer.music.set_volume(0)
+      sword_fx.set_volume(0)
+      magic_fx.set_volume(0)
+      yasuo_fx.set_volume(0)
+      if (sound_off_button.draw(screen)):
+        sound_fx += 1
+    
   if game_state == "character":
     screen.fill(WHITE)
     if back_button.draw(screen):
