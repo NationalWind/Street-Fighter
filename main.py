@@ -1,4 +1,5 @@
 import pygame
+import textwrap
 from button import Button
 from pygame import mixer
 from fighter import Fighter
@@ -80,6 +81,8 @@ sword_fx = pygame.mixer.Sound("assets/audio/sword.wav")
 sword_fx.set_volume(0.5)
 magic_fx = pygame.mixer.Sound("assets/audio/magic.wav")
 magic_fx.set_volume(0.75)
+yasuo_fx = pygame.mixer.Sound("assets/audio/Yasuo.mp3")
+yasuo_fx.set_volume(0.75)
 
 #load background image
 bg_image = pygame.image.load("assets/images/background/background.jpg").convert_alpha()
@@ -150,7 +153,7 @@ def draw_text_right(text, font, text_col, x, y):
   text_rect.x = x - text_rect.width
   text_rect.y = y
   screen.blit(img, text_rect)
-
+  
 #function for drawing background
 def draw_bg():
   scaled_bg = pygame.transform.scale(bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -176,8 +179,8 @@ def draw_avatar(avatar1, avatar2):
   
 
 #create two instances of fighters
-yasuo_1 = Fighter(1, 200, 310, False, YASUO_DATA, yasuo_sheet, YASUO_ANIMATION_STEPS, sword_fx, object_yasuo_data, yasuo_projectile)
-yasuo_2 = Fighter(2, 700, 310, True, YASUO_DATA, yasuo_sheet, YASUO_ANIMATION_STEPS, sword_fx, object_yasuo_data, yasuo_projectile)
+yasuo_1 = Fighter(1, 200, 310, False, YASUO_DATA, yasuo_sheet, YASUO_ANIMATION_STEPS, yasuo_fx, object_yasuo_data, yasuo_projectile)
+yasuo_2 = Fighter(2, 700, 310, True, YASUO_DATA, yasuo_sheet, YASUO_ANIMATION_STEPS, yasuo_fx, object_yasuo_data, yasuo_projectile)
 karthus_1 = Fighter(1, 200, 310, False, KARTHUS_DATA, karthus_sheet, KARTHUS_ANIMATION_STEPS, magic_fx, object_karthus_data, karthus_projectile)
 karthus_2 = Fighter(2, 700, 310, True, KARTHUS_DATA, karthus_sheet, KARTHUS_ANIMATION_STEPS, magic_fx, object_karthus_data, karthus_projectile)
 masteryi_1 = Fighter(1, 200, 310, False, MASTERYI_DATA, masteryi_sheet, MASTERYI_ANIMATION_STEPS, sword_fx, object_masteryi_data, masteryi_projectile)
@@ -208,11 +211,16 @@ while run:
     screen.fill(WHITE)
     if back_button.draw(screen):
       game_state = "menu"
+      
   if game_state == "character":
     screen.fill(WHITE)
     if back_button.draw(screen):
       game_state = "menu"
-
+      choose_character = 0
+      yasuo_check = [False, False]
+      karthus_check = [False, False]
+      masteryi_check = [False, False]
+      cassiopeia_check = [False, False]
     #draw character buttons
     yasuo_button.draw_border(screen)
     karthus_button.draw_border(screen)
