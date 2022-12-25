@@ -360,10 +360,10 @@ while run:
       masteryi_check = [False, False]
       cassiopeia_check = [False, False]
     #draw character buttons
-    screen.blit(border_img, (100, 250))
-    screen.blit(border_img, (300, 250))
-    screen.blit(border_img, (500, 250))
-    screen.blit(border_img, (700, 250))
+    screen.blit(border_img, (100, 253))
+    screen.blit(border_img, (300, 253))
+    screen.blit(border_img, (500, 253))
+    screen.blit(border_img, (700, 253))
 
     draw_text_center("CHOOSE YOUR FIGHTER", main_font, BROWN, 55)
     #write character names
