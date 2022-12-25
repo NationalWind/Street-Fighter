@@ -216,7 +216,7 @@ def draw_health_bar(health, x, y, flip):
   scaled_yellow = pygame.transform.scale(yellow_health_img, ((SCREEN_WIDTH / 2 - 80)* ratio, SCREEN_HEIGHT / 15))
   screen.blit(scaled_yellow, health_bar_yellow)
 
-def draw_mana_bar(mana, x, y):
+def draw_mana_bar(mana, x, y, flip):
   ratio = mana / 100
   #pygame.draw.rect(screen, WHITE, (x - 2, y - 2, 404, 12))
   scaled_white = pygame.transform.scale(white_bar_img, ((SCREEN_WIDTH / 3), SCREEN_HEIGHT / 50))
@@ -225,7 +225,11 @@ def draw_mana_bar(mana, x, y):
   #pygame.draw.rect(screen, GRAY, (x, y, 400, 8))
   #pygame.draw.rect(screen, CYAN, (x, y, 400 * ratio, 8))
   scaled_cyan = pygame.transform.scale(mana_bar_img, ((SCREEN_WIDTH / 3) * ratio, SCREEN_HEIGHT / 50))
-  screen.blit(scaled_cyan, (x, y + 5))
+
+  if flip == True:
+    screen.blit(scaled_cyan, (x + (SCREEN_WIDTH / 3) * (1 - ratio), y + 5))
+  else: 
+    screen.blit(scaled_cyan, (x, y + 5))
 
 #function for drawing avatar
 def draw_avatar(avatar1, avatar2):
@@ -447,8 +451,8 @@ while run:
     #show player stats
     draw_health_bar(fighter_1.health, 20, 20, False)
     draw_health_bar(fighter_2.health, 580, 20, True)
-    draw_mana_bar(fighter_1.mana, 20, 55)
-    draw_mana_bar(fighter_2.mana, 650, 55)
+    draw_mana_bar(fighter_1.mana, 20, 55, False)
+    draw_mana_bar(fighter_2.mana, 650, 55, True)
     draw_text("P1: " + str(score[0]), score_font, RED, 360, 60)
     draw_text("P2: " + str(score[1]), score_font, BLUE, 580, 60)
     draw_text(name_1, name_font, RED, 20, 70)
