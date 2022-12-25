@@ -27,6 +27,7 @@ WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 CYAN = (0, 255, 255)
 GRAY = (127, 127, 127)
+BROWN = (100, 40, 0)
 
 #define game variables
 intro_count = 3
@@ -83,29 +84,34 @@ sword_fx.set_volume(0.5)
 magic_fx = pygame.mixer.Sound("assets/audio/magic.wav")
 magic_fx.set_volume(0.75)
 yasuo_fx = pygame.mixer.Sound("assets/audio/Yasuo.mp3")
-yasuo_fx.set_volume(0.75)
+yasuo_fx.set_volume(1.5)
 ko_fx = pygame.mixer.Sound("assets/audio/KO.mp3")
 ko_fx.set_volume(0.75)
 
 #load background image
 bg_image = pygame.image.load("assets/images/background/background.jpg").convert_alpha()
+menu_image = pygame.image.load("assets/images/background/background_street.png").convert_alpha()
 
 #load item icon
 timer_img = pygame.image.load("assets/images/icons/timer.png")
+border_img = pygame.image.load("assets/images/buttons/frame.png")
 
 #load beginning buttons
 back_image = pygame.image.load("assets/images/buttons/back.png").convert_alpha()
 back_button = Button(0, 0, back_image, 0.5)
 start_image = pygame.image.load("assets/images/buttons/start.png").convert_alpha()
-start_button = Button(322, 50, start_image, 1)
+start_button = Button(370, 150, start_image, 0.75)
 setting_image = pygame.image.load("assets/images/buttons/setting.png").convert_alpha()
-setting_button = Button(322, 250, setting_image, 1)
+setting_button = Button(370, 300, setting_image, 0.75)
 exit_image = pygame.image.load("assets/images/buttons/exit.png").convert_alpha()
-exit_button = Button(322, 450, exit_image, 1)
+exit_button = Button(370, 450, exit_image, 0.75)
 sound_on_image = pygame.image.load("assets/images/buttons/sound_on.png").convert_alpha()
-sound_on_button = Button(300, 50, sound_on_image, 2)
+sound_on_button = Button(300, 175, sound_on_image, 1)
 sound_off_image = pygame.image.load("assets/images/buttons/sound_off.png").convert_alpha()
-sound_off_button = Button(500, 50, sound_off_image, 2)
+sound_off_button = Button(500, 175, sound_off_image, 1)
+credits_image = pygame.image.load("assets/images/buttons/credits.png").convert_alpha()
+credits_button = Button(811, 531, credits_image, 1)
+
 
 #load avatar
 avatar_yasuo = pygame.image.load("assets/images/avatar/yasuo.png").convert_alpha()
@@ -114,13 +120,13 @@ avatar_masteryi = pygame.image.load("assets/images/avatar/masteryi.png").convert
 avatar_cassiopeia = pygame.image.load("assets/images/avatar/cassiopeia.png").convert_alpha()
 
 #load character choosing buttons
-yasuo_button = Button(100, 250, avatar_yasuo, 1)
+yasuo_button = Button(100, 250, avatar_yasuo, 1.5)
 yasuo_check = [False, False]
-karthus_button = Button(300, 250, avatar_karthus, 1)
+karthus_button = Button(300, 250, avatar_karthus, 1.5)
 karthus_check = [False, False]
-masteryi_button = Button(500, 250, avatar_masteryi, 1)
+masteryi_button = Button(500, 250, avatar_masteryi, 1.5)
 masteryi_check = [False, False]
-cassiopeia_button = Button(700, 250, avatar_cassiopeia, 1)
+cassiopeia_button = Button(700, 250, avatar_cassiopeia, 1.5)
 cassiopeia_check = [False, False]
 
 
@@ -164,6 +170,8 @@ down_key_image = pygame.image.load("assets/images/keys/Down-Key.png").convert_al
 right_key_image = pygame.image.load("assets/images/keys/Right-Key.png").convert_alpha()
 one_key_image = pygame.image.load("assets/images/keys/1-Key.png").convert_alpha()
 two_key_image = pygame.image.load("assets/images/keys/2-Key.png").convert_alpha()
+n_key_image = pygame.image.load("assets/images/keys/N-Key.png").convert_alpha()
+m_key_image = pygame.image.load("assets/images/keys/M-Key.png").convert_alpha()
 
 #define number of steps in each animation
 YASUO_ANIMATION_STEPS = [8, 8, 2, 6, 6, 4, 6]
@@ -174,7 +182,9 @@ CASSIOPEIA_ANIMATION_STEPS = [9, 9, 1, 16, 16, 3, 8]
 #define font
 count_font = pygame.font.Font("assets/fonts/turok.ttf", 80)
 name_font = pygame.font.Font("assets/fonts/gunfighter-academy.ttf", 20)
+main_font = pygame.font.Font("assets/fonts/gunfighter-academy.ttf", 50)
 score_font = pygame.font.Font("assets/fonts/turok.ttf", 30)
+credits_font = pygame.font.Font("assets/fonts/FVF Fernando 08.ttf", 20)
 
 #function for drawing text
 def draw_text(text, font, text_col, x, y):
@@ -187,10 +197,16 @@ def draw_text_right(text, font, text_col, x, y):
   text_rect.x = x - text_rect.width
   text_rect.y = y
   screen.blit(img, text_rect)
+
+def draw_text_center(text, font, text_col, y):
+  img = font.render(text, True, text_col)
+  rect = img.get_rect()
+  x = (SCREEN_WIDTH - rect.width) // 2
+  screen.blit(img, (x, y))
   
 #function for drawing background
-def draw_bg():
-  scaled_bg = pygame.transform.scale(bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+def draw_bg(bg):
+  scaled_bg = pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
   screen.blit(scaled_bg, (0, 0))
 
 #function for drawing fighter health bars
@@ -218,12 +234,8 @@ def draw_health_bar(health, x, y, flip):
 
 def draw_mana_bar(mana, x, y, flip):
   ratio = mana / 100
-  #pygame.draw.rect(screen, WHITE, (x - 2, y - 2, 404, 12))
   scaled_white = pygame.transform.scale(white_bar_img, ((SCREEN_WIDTH / 3), SCREEN_HEIGHT / 50))
   screen.blit(scaled_white, (x, y + 5))
-
-  #pygame.draw.rect(screen, GRAY, (x, y, 400, 8))
-  #pygame.draw.rect(screen, CYAN, (x, y, 400 * ratio, 8))
   scaled_cyan = pygame.transform.scale(mana_bar_img, ((SCREEN_WIDTH / 3) * ratio, SCREEN_HEIGHT / 50))
 
   if flip == True:
@@ -265,6 +277,8 @@ run = True
 while run:
   if game_state == "menu":
     screen.fill(WHITE)
+    draw_bg(bg_image)
+    draw_text_center("STREET FIGHTER", main_font, BROWN, 55)
     if start_button.draw(screen):
       game_state = "character"
       
@@ -276,33 +290,40 @@ while run:
       
   if game_state == "setting":
     screen.fill(WHITE)
-    
-    screen.blit(sound_img, (150, 90))
-    screen.blit(button_img, (150, 300))
-    screen.blit(player1_img, (400, 250))
-    screen.blit(player2_img, (700, 250))
+    draw_bg(bg_image)
+    draw_text("GAME SETTINGS", main_font, BROWN, 270, 55)
+    screen.blit(sound_img, (150, 190))
+    screen.blit(button_img, (150, 400))
+    screen.blit(player1_img, (400, 350))
+    screen.blit(player2_img, (700, 350))
 
-    screen.blit(w_key_image, (400, 300))
-    screen.blit(s_key_image, (400, 332))
-    screen.blit(a_key_image, (368, 332))
-    screen.blit(d_key_image, (432, 332))
-    screen.blit(r_key_image, (464, 300))
-    screen.blit(t_key_image, (496, 300))
+    screen.blit(w_key_image, (400, 400))
+    screen.blit(s_key_image, (400, 432))
+    screen.blit(a_key_image, (368, 432))
+    screen.blit(d_key_image, (432, 432))
+    screen.blit(r_key_image, (464, 400))
+    screen.blit(t_key_image, (496, 400))
     
-    screen.blit(up_key_image, (700, 300))
-    screen.blit(down_key_image, (700, 332))
-    screen.blit(left_key_image, (668, 332))
-    screen.blit(right_key_image, (732, 332))
-    screen.blit(one_key_image, (764, 300))
-    screen.blit(two_key_image, (796, 300))
-    
+    screen.blit(up_key_image, (700, 400))
+    screen.blit(down_key_image, (700, 432))
+    screen.blit(left_key_image, (668, 432))
+    screen.blit(right_key_image, (732, 432))
+    screen.blit(one_key_image, (764, 400))
+    screen.blit(two_key_image, (796, 400))
+    draw_text("OR", credits_font, WHITE, 848, 390)
+    screen.blit(n_key_image, (900, 400))
+    screen.blit(m_key_image, (932, 400))
+
+    if credits_button.draw(screen):
+      game_state = "credits"
     if back_button.draw(screen):
       game_state = "menu"
     if (sound_fx % 2 == 0):
       pygame.mixer.music.set_volume(0.5)
       sword_fx.set_volume(0.5)
       magic_fx.set_volume(0.75)
-      yasuo_fx.set_volume(0.75)
+      yasuo_fx.set_volume(1.5)
+      ko_fx.set_volume(0.75)
       if (sound_on_button.draw(screen)):
         sound_fx += 1
     else:
@@ -310,11 +331,27 @@ while run:
       sword_fx.set_volume(0)
       magic_fx.set_volume(0)
       yasuo_fx.set_volume(0)
+      ko_fx.set_volume(0)
       if (sound_off_button.draw(screen)):
         sound_fx += 1
+
+  if game_state == "credits":
+    screen.fill(WHITE)
+    draw_bg(bg_image)
+    draw_text_center("CREDITS", main_font, BROWN, 55)
+    draw_text_center("ORIGINAL IDEAS: CODING WITH RUSS", credits_font, BLACK, 150)
+    draw_text_center("Group 4", score_font, BLACK, 250)
+    draw_text_center("LEADER: Trần Quốc Phong - 22127327", credits_font, WHITE, 350)
+    draw_text_center("MEMBER: Lê Ngọc Vĩ - 22127452", credits_font, WHITE, 400)
+    draw_text_center("MEMBER: Lâm Chí Tài - 22127370", credits_font, WHITE, 450)
+    draw_text_center("MEMBER: Lê Quốc Khánh - 22127186", credits_font, WHITE, 500)
+    draw_text_center("MEMBER: Trang Ngọc Châu - 22127044", credits_font, WHITE, 550)
+    if (back_button.draw(screen)):
+      game_state = "setting"
     
   if game_state == "character":
     screen.fill(WHITE)
+    draw_bg(bg_image)
     if back_button.draw(screen):
       game_state = "menu"
       choose_character = 0
@@ -323,16 +360,17 @@ while run:
       masteryi_check = [False, False]
       cassiopeia_check = [False, False]
     #draw character buttons
-    yasuo_button.draw_border(screen)
-    karthus_button.draw_border(screen)
-    masteryi_button.draw_border(screen)
-    cassiopeia_button.draw_border(screen)
+    screen.blit(border_img, (100, 250))
+    screen.blit(border_img, (300, 250))
+    screen.blit(border_img, (500, 250))
+    screen.blit(border_img, (700, 250))
 
+    draw_text_center("CHOOSE YOUR FIGHTER", main_font, BROWN, 55)
     #write character names
-    draw_text("Yasuo", name_font, BLACK, 100, 350)
-    draw_text("Karthus", name_font, BLACK, 300, 350)
-    draw_text("Master Yi", name_font, BLACK, 500, 350)
-    draw_text("Cassiopeia", name_font, BLACK, 700, 350)
+    draw_text("Yasuo", name_font, WHITE, 100, 400)
+    draw_text("Karthus", name_font, WHITE, 300, 400)
+    draw_text("Master Yi", name_font, WHITE, 500, 400)
+    draw_text("Cassiopeia", name_font, WHITE, 700, 400)
     
     if yasuo_check[0] == True:
       screen.blit(player1_img, (80, 212))
@@ -446,7 +484,7 @@ while run:
     clock.tick(FPS)
 
     #draw background
-    draw_bg()
+    draw_bg(bg_image)
 
     #show player stats
     draw_health_bar(fighter_1.health, 20, 20, False)
