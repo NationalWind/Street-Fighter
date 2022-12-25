@@ -137,7 +137,7 @@ masteryi_sheet = pygame.image.load("assets/images/characters/masteryi.png").conv
 cassiopeia_sheet = pygame.image.load("assets/images/characters/cassiopeia.png").convert_alpha()
 
 #load projectile image
-yasuo_projectile = pygame.image.load("assets/images/warrior/Skillwave_MasterYi.png").convert_alpha()
+yasuo_projectile = pygame.image.load("assets/images/warrior/Skillwave_Yasuo.png").convert_alpha()
 karthus_projectile = pygame.image.load("assets/images/warrior/Skillwave_Karthus.png").convert_alpha()
 masteryi_projectile = pygame.image.load("assets/images/warrior/Skillwave_MasterYi.png").convert_alpha()
 cassiopeia_projectile = pygame.image.load("assets/images/warrior/Skillwave_Karthus.png").convert_alpha()

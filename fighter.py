@@ -2,39 +2,39 @@ import pygame
 import time
 
 class Projectile():
-    def __init__(self, x, y, flip, object_data, object_image):
-        self.size = object_data[0] #16
-        self.image_scale = object_data[1] #20
-        self.offset = object_data[2] #[12, 5]
-        self.image  = object_image
-        self.image = pygame.transform.scale(self.image, (self.size * self.image_scale, self.size * self.image_scale))
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-        self.flip = flip
-        self.speed = 15
-        #self.image2 = self.load_images(self.image, 1)
+  def __init__(self, x, y, flip, object_data, object_image):
+    self.size = object_data[0] #16
+    self.image_scale = object_data[1] #20
+    self.offset = object_data[2] #[12, 5]
+    self.image  = object_image
+    self.image = pygame.transform.scale(self.image, (self.size * self.image_scale, self.size * self.image_scale))
+    self.rect = self.image.get_rect()
+    self.rect.x = x
+    self.rect.y = y
+    self.flip = flip
+    self.speed = 15
+    #self.image2 = self.load_images(self.image, 1)
 
 
-    def move(self):
-        # move projectile in the correct direction
-        if self.flip:
-            self.rect.x -= self.speed
-        else:
-            self.rect.x += self.speed
-    
-    #def load_images(self, skill_sheet, skill_steps):
-      #animation_list = []
-      #for x in range(skill_steps):
-        #temp_img = self.image.subsurface(x * self.size, self.size, self.size, self.size)
-        #animation_list.append(pygame.transform.scale(temp_img, (self.size * self.image_scale, self.size * self.image_scale)))
-      #return animation_list
-    
-    def draw(self, surface):
-      if self.flip:
-            surface.blit(pygame.transform.flip(self.image, True, False), (self.rect.x - (self.offset[0] * self.image_scale), self.rect.y - (self.offset[1] * self.image_scale)))
-      else:
-            surface.blit(self.image, (self.rect.x - (self.offset[0] * self.image_scale) + 100, self.rect.y - (self.offset[1] * self.image_scale)))
+  def move(self):
+    # move projectile in the correct direction
+    if self.flip:
+        self.rect.x -= self.speed
+    else:
+        self.rect.x += self.speed
+  
+  #def load_images(self, skill_sheet, skill_steps):
+    #animation_list = []
+    #for x in range(skill_steps):
+      #temp_img = self.image.subsurface(x * self.size, self.size, self.size, self.size)
+      #animation_list.append(pygame.transform.scale(temp_img, (self.size * self.image_scale, self.size * self.image_scale)))
+    #return animation_list
+  
+  def draw(self, surface):
+    if self.flip:
+      surface.blit(pygame.transform.flip(self.image, True, False), (self.rect.x - (self.offset[0] * self.image_scale), self.rect.y - (self.offset[1] * self.image_scale)))
+    else:
+      surface.blit(self.image, (self.rect.x - (self.offset[0] * self.image_scale) + 100, self.rect.y - (self.offset[1] * self.image_scale)))
 
 
 class Fighter():
@@ -235,7 +235,6 @@ class Fighter():
         target.health -= 10
         target.hit = True
         self.projectiles.remove(projectile)
-
 
   def attack(self, target, surface):
     if self.attack_cooldown == 0:
