@@ -114,13 +114,13 @@ avatar_cassiopeia_1 = pygame.image.load("assets/images/avatar/cassiopeia_1.png")
 avatar_cassiopeia_2 = pygame.image.load("assets/images/avatar/cassiopeia_2.png").convert_alpha()
 
 #load character choosing buttons
-yasuo_button = Button(100, 250, avatar_yasuo_1, 1)
+yasuo_button = Button(120, 250, avatar_yasuo_1, 1.5)
 yasuo_check = [False, False]
-karthus_button = Button(300, 250, avatar_karthus_1, 1)
+karthus_button = Button(320, 250, avatar_karthus_1, 1.5)
 karthus_check = [False, False]
-masteryi_button = Button(500, 250, avatar_masteryi_1, 1)
+masteryi_button = Button(520, 250, avatar_masteryi_1, 1.5)
 masteryi_check = [False, False]
-cassiopeia_button = Button(700, 250, avatar_cassiopeia_1, 1)
+cassiopeia_button = Button(720, 250, avatar_cassiopeia_1, 1.5)
 cassiopeia_check = [False, False]
 
 
@@ -167,6 +167,7 @@ CASSIOPEIA_ANIMATION_STEPS = [9, 9, 1, 16, 16, 3, 8]
 #define font
 count_font = pygame.font.Font("assets/fonts/turok.ttf", 80)
 name_font = pygame.font.Font("assets/fonts/gunfighter-academy.ttf", 20)
+character_font = pygame.font.Font("assets/fonts/gunfighter-academy.ttf", 50)
 score_font = pygame.font.Font("assets/fonts/turok.ttf", 30)
 
 #function for drawing text
@@ -240,17 +241,18 @@ run = True
 while run:
   if game_state == "menu":
     screen.fill(WHITE)
+    draw_bg()
+    
     if start_button.draw(screen):
       game_state = "character"
-      
     if setting_button.draw(screen):
       game_state = "setting"
-      
     if exit_button.draw(screen):
       run = False
       
   if game_state == "setting":
     screen.fill(WHITE)
+    draw_bg()
     
     screen.blit(sound_img, (150, 90))
     screen.blit(button_img, (150, 300))
@@ -290,6 +292,9 @@ while run:
     
   if game_state == "character":
     screen.fill(WHITE)
+    draw_bg()
+    draw_text("CHOOSE YOUR FIGHTER", character_font, WHITE, 100, 150)
+    
     if back_button.draw(screen):
       game_state = "menu"
       choose_character = 0
@@ -304,16 +309,16 @@ while run:
     cassiopeia_button.draw_border(screen)
 
     #write character names
-    draw_text("Yasuo", name_font, BLACK, 100, 350)
-    draw_text("Karthus", name_font, BLACK, 300, 350)
-    draw_text("Master Yi", name_font, BLACK, 500, 350)
-    draw_text("Cassiopeia", name_font, BLACK, 700, 350)
+    draw_text("Yasuo", name_font, WHITE, 120, 400)
+    draw_text("Karthus", name_font, WHITE, 320, 400)
+    draw_text("Master Yi", name_font, WHITE, 520, 400)
+    draw_text("Cassiopeia", name_font, WHITE, 720, 400)
     
     if yasuo_check[0] == True:
-      screen.blit(player1_img, (80, 212))
+      screen.blit(player1_img, (100, 212))
     if yasuo_check[1] == True:
-      screen.blit(player2_img, (150, 212))
-      if (pygame.time.get_ticks() - before_player2 > 2000):
+      screen.blit(player2_img, (170, 212))
+      if (pygame.time.get_ticks() - before_player2 > 1500):
         choose_character = 0
         yasuo_check = [False, False]
         karthus_check = [False, False]
@@ -322,10 +327,10 @@ while run:
         game_state = "game"
         
     if karthus_check[0] == True:
-      screen.blit(player1_img, (280, 212))
+      screen.blit(player1_img, (300, 212))
     if karthus_check[1] == True:
-      screen.blit(player2_img, (350, 212))
-      if (pygame.time.get_ticks() - before_player2 > 2000):
+      screen.blit(player2_img, (370, 212))
+      if (pygame.time.get_ticks() - before_player2 > 1500):
         choose_character = 0
         yasuo_check = [False, False]
         karthus_check = [False, False]
@@ -334,10 +339,10 @@ while run:
         game_state = "game"
         
     if masteryi_check[0] == True:
-      screen.blit(player1_img, (480, 212))
+      screen.blit(player1_img, (500, 212))
     if masteryi_check[1] == True:
-      screen.blit(player2_img, (550, 212))
-      if (pygame.time.get_ticks() - before_player2 > 2000):
+      screen.blit(player2_img, (570, 212))
+      if (pygame.time.get_ticks() - before_player2 > 1500):
         choose_character = 0
         yasuo_check = [False, False]
         karthus_check = [False, False]
@@ -346,10 +351,10 @@ while run:
         game_state = "game"
         
     if cassiopeia_check[0] == True:
-      screen.blit(player1_img, (680, 212))
+      screen.blit(player1_img, (700, 212))
     if cassiopeia_check[1] == True:
-      screen.blit(player2_img, (750, 212))
-      if (pygame.time.get_ticks() - before_player2 > 2000):
+      screen.blit(player2_img, (770, 212))
+      if (pygame.time.get_ticks() - before_player2 > 1500):
         choose_character = 0
         yasuo_check = [False, False]
         karthus_check = [False, False]
