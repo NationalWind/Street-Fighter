@@ -41,19 +41,19 @@ sound_fx = 0
 #define fighter variables
 YASUO_SIZE = 200
 YASUO_SCALE = 4
-YASUO_OFFSET = [90, 77]
+YASUO_OFFSET = [90, 65] #77
 YASUO_DATA = [YASUO_SIZE, YASUO_SCALE, YASUO_OFFSET]
 KARTHUS_SIZE = 250
 KARTHUS_SCALE = 3
-KARTHUS_OFFSET = [112, 107]
+KARTHUS_OFFSET = [112, 92] # 107
 KARTHUS_DATA = [KARTHUS_SIZE, KARTHUS_SCALE, KARTHUS_OFFSET]
 MASTERYI_SIZE = 162
 MASTERYI_SCALE = 4
-MASTERYI_OFFSET = [72, 56]
+MASTERYI_OFFSET = [72, 44] #56
 MASTERYI_DATA = [MASTERYI_SIZE, MASTERYI_SCALE, MASTERYI_OFFSET]
 CASSIOPEIA_SIZE = 125
 CASSIOPEIA_SCALE = 2
-CASSIOPEIA_OFFSET = [50, -10]
+CASSIOPEIA_OFFSET = [50, -32] #-10
 CASSIOPEIA_DATA = [CASSIOPEIA_SIZE, CASSIOPEIA_SCALE, CASSIOPEIA_OFFSET]
 
 #define projectile variables
@@ -83,7 +83,7 @@ sword_fx.set_volume(0.5)
 magic_fx = pygame.mixer.Sound("assets/audio/magic.wav")
 magic_fx.set_volume(0.75)
 yasuo_fx = pygame.mixer.Sound("assets/audio/Yasuo.mp3")
-yasuo_fx.set_volume(0.75)
+yasuo_fx.set_volume(1.5)
 
 #load background image
 bg_image = pygame.image.load("assets/images/background/background_forest.png").convert_alpha()
@@ -104,19 +104,23 @@ sound_off_button = Button(500, 50, sound_off_image, 2)
 
 
 #load avatar
-avatar_yasuo = pygame.image.load("assets/images/avatar/yasuo.png").convert_alpha()
-avatar_karthus = pygame.image.load("assets/images/avatar/karthus.png").convert_alpha()
-avatar_masteryi = pygame.image.load("assets/images/avatar/masteryi.png").convert_alpha()
-avatar_cassiopeia = pygame.image.load("assets/images/avatar/cassiopeia.png").convert_alpha()
+avatar_yasuo_1 = pygame.image.load("assets/images/avatar/yasuo_1.png").convert_alpha()
+avatar_yasuo_2 = pygame.image.load("assets/images/avatar/yasuo_2.png").convert_alpha()
+avatar_karthus_1 = pygame.image.load("assets/images/avatar/karthus_1.png").convert_alpha()
+avatar_karthus_2 = pygame.image.load("assets/images/avatar/karthus_2.png").convert_alpha()
+avatar_masteryi_1 = pygame.image.load("assets/images/avatar/masteryi_1.png").convert_alpha()
+avatar_masteryi_2 = pygame.image.load("assets/images/avatar/masteryi_2.png").convert_alpha()
+avatar_cassiopeia_1 = pygame.image.load("assets/images/avatar/cassiopeia_1.png").convert_alpha()
+avatar_cassiopeia_2 = pygame.image.load("assets/images/avatar/cassiopeia_2.png").convert_alpha()
 
 #load character choosing buttons
-yasuo_button = Button(100, 250, avatar_yasuo, 1)
+yasuo_button = Button(100, 250, avatar_yasuo_1, 1)
 yasuo_check = [False, False]
-karthus_button = Button(300, 250, avatar_karthus, 1)
+karthus_button = Button(300, 250, avatar_karthus_1, 1)
 karthus_check = [False, False]
-masteryi_button = Button(500, 250, avatar_masteryi, 1)
+masteryi_button = Button(500, 250, avatar_masteryi_1, 1)
 masteryi_check = [False, False]
-cassiopeia_button = Button(700, 250, avatar_cassiopeia, 1)
+cassiopeia_button = Button(700, 250, avatar_cassiopeia_1, 1)
 cassiopeia_check = [False, False]
 
 
@@ -189,11 +193,23 @@ def draw_health_bar(health, x, y):
   pygame.draw.rect(screen, RED, (x, y, 400, 30))
   pygame.draw.rect(screen, YELLOW, (x, y, 400 * ratio, 30))
 
+def draw_health_bar_2(health, x, y):
+  ratio = health / 100
+  pygame.draw.rect(screen, WHITE, (x - 2, y - 2, 404, 34))
+  pygame.draw.rect(screen, RED, (x, y, 400, 30))
+  pygame.draw.rect(screen, YELLOW, (x + 400 * (1 - ratio), y, 400 * ratio, 30))
+    
 def draw_mana_bar(mana, x, y):
   ratio = mana / 100
   pygame.draw.rect(screen, WHITE, (x - 2, y - 2, 404, 12))
   pygame.draw.rect(screen, GRAY, (x, y, 400, 8))
   pygame.draw.rect(screen, CYAN, (x, y, 400 * ratio, 8))
+
+def draw_mana_bar_2(mana, x, y):
+  ratio = mana / 100
+  pygame.draw.rect(screen, WHITE, (x - 2, y - 2, 404, 12))
+  pygame.draw.rect(screen, GRAY, (x, y, 400, 8))
+  pygame.draw.rect(screen, CYAN, (x + 400 * (1 - ratio), y, 400 * ratio, 8))
 
 #function for drawing avatar
 def draw_avatar(avatar1, avatar2):
@@ -214,8 +230,8 @@ cassiopeia_2 = Fighter(2, 700, 310, True, CASSIOPEIA_DATA, cassiopeia_sheet, CAS
 #init variables
 fighter_1 = type(yasuo_1)
 fighter_2 = type(yasuo_1)
-avatar_1 = type(avatar_yasuo)
-avatar_2 = type(avatar_yasuo)
+avatar_1 = type(avatar_yasuo_1)
+avatar_2 = type(avatar_yasuo_1)
 name_1 = ""
 name_2 = ""
 
@@ -344,13 +360,13 @@ while run:
     if yasuo_button.draw(screen) and choose_character < 2:
       if choose_character == 0:
         fighter_1 = yasuo_1
-        avatar_1 = avatar_yasuo
+        avatar_1 = avatar_yasuo_1
         yasuo_check[0] = True
         choose_character += 1
         name_1 = "Yasuo"
       elif choose_character == 1:
         fighter_2 = yasuo_2
-        avatar_2 = avatar_yasuo
+        avatar_2 = avatar_yasuo_2
         yasuo_check[1] = True
         choose_character += 1
         name_2 = "Yasuo"
@@ -359,13 +375,13 @@ while run:
     if karthus_button.draw(screen) and choose_character < 2:
       if choose_character == 0:
         fighter_1 = karthus_1
-        avatar_1 = avatar_karthus
+        avatar_1 = avatar_karthus_1
         karthus_check[0] = True
         choose_character += 1
         name_1 = "Karthus"
       elif choose_character == 1:
         fighter_2 = karthus_2
-        avatar_2 = avatar_karthus
+        avatar_2 = avatar_karthus_2
         karthus_check[1] = True
         choose_character += 1
         name_2 = "Karthus"
@@ -374,13 +390,13 @@ while run:
     if masteryi_button.draw(screen) and choose_character < 2:
       if choose_character == 0:
         fighter_1 = masteryi_1
-        avatar_1 = avatar_masteryi
+        avatar_1 = avatar_masteryi_1
         masteryi_check[0] = True
         choose_character += 1
         name_1 = "Master Yi"
       elif choose_character == 1:
         fighter_2 = masteryi_2
-        avatar_2 = avatar_masteryi
+        avatar_2 = avatar_masteryi_2
         masteryi_check[1] = True
         choose_character += 1
         name_2 = "Master Yi"
@@ -389,13 +405,13 @@ while run:
     if cassiopeia_button.draw(screen) and choose_character < 2:
       if choose_character == 0:
         fighter_1 = cassiopeia_1
-        avatar_1 = avatar_cassiopeia
+        avatar_1 = avatar_cassiopeia_1
         cassiopeia_check[0] = True
         choose_character += 1
         name_1 = "Cassiopeia"
       elif choose_character == 1:
         fighter_2 = cassiopeia_2
-        avatar_2 = avatar_cassiopeia
+        avatar_2 = avatar_cassiopeia_2
         cassiopeia_check[1] = True
         choose_character += 1
         name_2 = "Cassiopeia"
@@ -410,9 +426,9 @@ while run:
 
     #show player stats
     draw_health_bar(fighter_1.health, 20, 20)
-    draw_health_bar(fighter_2.health, 580, 20)
+    draw_health_bar_2(fighter_2.health, 580, 20)
     draw_mana_bar(fighter_1.mana, 20, 55)
-    draw_mana_bar(fighter_2.mana, 580, 55)
+    draw_mana_bar_2(fighter_2.mana, 580, 55)
     draw_text("P1: " + str(score[0]), score_font, RED, 360, 60)
     draw_text("P2: " + str(score[1]), score_font, BLUE, 580, 60)
     draw_text(name_1, name_font, RED, 20, 70)
