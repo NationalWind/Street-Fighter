@@ -291,7 +291,7 @@ while run:
   if game_state == "setting":
     screen.fill(WHITE)
     draw_bg(bg_image)
-    draw_text("GAME SETTINGS", main_font, BROWN, 270, 55)
+    draw_text_center("GAME SETTINGS", main_font, BROWN, 55)
     screen.blit(sound_img, (150, 190))
     screen.blit(button_img, (150, 400))
     screen.blit(player1_img, (400, 350))
